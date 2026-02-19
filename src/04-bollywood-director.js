@@ -45,13 +45,54 @@
  *   pricer("gold", true)  // => 200 * 1.5 * 1.3 = 390
  */
 export function createDialogueWriter(genre) {
-  // Your code here
+  if(genre!=='action' && genre!=='romance' && genre!=='comedy' && genre!=='drama') return null;
+  return function(hero,villain){
+    if(!hero||!villain||hero.length===0||villain.length===0) return "..."
+    
+    if(genre==="action"){
+      return `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
+    }
+    else if(genre==='romance'){
+      return `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`
+    }
+    else if(genre==='comedy'){
+      return `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`
+    }
+    else{
+      return `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+    }
+  }
 }
 
 export function createTicketPricer(basePrice) {
-  // Your code here
+  if(basePrice<=0) return null;
+  return function(seatType,isWeekend=false){
+    if(seatType!=='silver'&&seatType!=='gold'&&seatType!=='platinum') return null    
+    if(seatType==='silver') basePrice*=1;
+    else if(seatType==='gold') basePrice*=1.5;
+    else basePrice*=2;
+    if(isWeekend) basePrice+=(basePrice)*0.3;
+    return Math.round(basePrice);
+  }
 }
 
 export function createRatingCalculator(weights) {
-  // Your code here
+  if(typeof weights!=='object' || weights===null|| Array.isArray(weights)) return null;
+  
+  
+  return function(scores){
+    let weightedavg=0;
+    let keysarray=[]
+    for(let props of Object.keys(weights)){
+      if(Object.keys(scores).includes(props)){
+        keysarray.push(props);
+      }
+    }
+    for(let key of keysarray){
+      weightedavg+=weights[key]*scores[key];
+    }
+     return parseFloat(weightedavg.toFixed(2))
+  }
+ 
+  
 }
