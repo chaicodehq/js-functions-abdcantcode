@@ -112,8 +112,11 @@ export function generatePattern(n) {
     const prev = build(i - 1);
     const current = repeatChar("*", i);
 
-    return [...prev, current, ...prev.slice().reverse()];
+    return [...prev, current];
   }
 
-  return build(n);
+  const ascending = build(n);
+  const descending = ascending.slice(0, -1).reverse();
+
+  return [...ascending, ...descending];
 }
